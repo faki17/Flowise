@@ -1,0 +1,1871 @@
+{
+  "nodes": [
+    {
+      "id": "seqStart_0",
+      "position": {
+        "x": -19.95828566860979,
+        "y": -129.21060029364094
+      },
+      "type": "customNode",
+      "data": {
+        "id": "seqStart_0",
+        "label": "Start",
+        "version": 2,
+        "name": "seqStart",
+        "type": "Start",
+        "baseClasses": [
+          "Start"
+        ],
+        "category": "Sequential Agents",
+        "description": "Starting point of the conversation",
+        "inputParams": [],
+        "inputAnchors": [
+          {
+            "label": "Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "description": "Only compatible with models that are capable of function calling: ChatOpenAI, ChatMistral, ChatAnthropic, ChatGoogleGenerativeAI, ChatVertexAI, GroqChat",
+            "id": "seqStart_0-input-model-BaseChatModel"
+          },
+          {
+            "label": "Agent Memory",
+            "name": "agentMemory",
+            "type": "BaseCheckpointSaver",
+            "description": "Save the state of the agent",
+            "optional": true,
+            "id": "seqStart_0-input-agentMemory-BaseCheckpointSaver"
+          },
+          {
+            "label": "State",
+            "name": "state",
+            "type": "State",
+            "description": "State is an object that is updated by nodes in the graph, passing from one node to another. By default, state contains \"messages\" that got updated with each message sent and received.",
+            "optional": true,
+            "id": "seqStart_0-input-state-State"
+          },
+          {
+            "label": "Input Moderation",
+            "description": "Detect text that could generate harmful output and prevent it from being sent to the language model",
+            "name": "inputModeration",
+            "type": "Moderation",
+            "optional": true,
+            "list": true,
+            "id": "seqStart_0-input-inputModeration-Moderation"
+          }
+        ],
+        "inputs": {
+          "model": "{{chatOpenAI_0.data.instance}}",
+          "agentMemory": "{{agentMemory_0.data.instance}}",
+          "state": "",
+          "inputModeration": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "seqStart_0-output-seqStart-Start",
+            "name": "seqStart",
+            "label": "Start",
+            "description": "Starting point of the conversation",
+            "type": "Start"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 382,
+      "positionAbsolute": {
+        "x": -19.95828566860979,
+        "y": -129.21060029364094
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "agentMemory_0",
+      "position": {
+        "x": -348.29082630097366,
+        "y": -126.08631892272126
+      },
+      "type": "customNode",
+      "data": {
+        "id": "agentMemory_0",
+        "label": "Agent Memory",
+        "version": 1,
+        "name": "agentMemory",
+        "type": "AgentMemory",
+        "baseClasses": [
+          "AgentMemory",
+          "BaseCheckpointSaver"
+        ],
+        "category": "Memory",
+        "description": "Memory for agentflow to remember the state of the conversation",
+        "inputParams": [
+          {
+            "label": "Database",
+            "name": "databaseType",
+            "type": "options",
+            "options": [
+              {
+                "label": "SQLite",
+                "name": "sqlite"
+              }
+            ],
+            "default": "sqlite",
+            "id": "agentMemory_0-input-databaseType-options"
+          },
+          {
+            "label": "Database File Path",
+            "name": "databaseFilePath",
+            "type": "string",
+            "placeholder": "C:\\Users\\User\\.flowise\\database.sqlite",
+            "description": "If SQLite is selected, provide the path to the SQLite database file. Leave empty to use default application database",
+            "additionalParams": true,
+            "optional": true,
+            "id": "agentMemory_0-input-databaseFilePath-string"
+          },
+          {
+            "label": "Additional Connection Configuration",
+            "name": "additionalConfig",
+            "type": "json",
+            "additionalParams": true,
+            "optional": true,
+            "id": "agentMemory_0-input-additionalConfig-json"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "databaseType": "sqlite",
+          "databaseFilePath": "",
+          "additionalConfig": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "agentMemory_0-output-agentMemory-AgentMemory|BaseCheckpointSaver",
+            "name": "agentMemory",
+            "label": "AgentMemory",
+            "description": "Memory for agentflow to remember the state of the conversation",
+            "type": "AgentMemory | BaseCheckpointSaver"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 327,
+      "selected": false,
+      "positionAbsolute": {
+        "x": -348.29082630097366,
+        "y": -126.08631892272126
+      },
+      "dragging": false
+    },
+    {
+      "id": "chatOpenAI_0",
+      "position": {
+        "x": -16.318716709910944,
+        "y": -825.0010185064682
+      },
+      "type": "customNode",
+      "data": {
+        "id": "chatOpenAI_0",
+        "label": "ChatOpenAI",
+        "version": 6,
+        "name": "chatOpenAI",
+        "type": "ChatOpenAI",
+        "baseClasses": [
+          "ChatOpenAI",
+          "BaseChatModel",
+          "BaseLanguageModel",
+          "Runnable"
+        ],
+        "category": "Chat Models",
+        "description": "Wrapper around OpenAI large language models that use the Chat endpoint",
+        "inputParams": [
+          {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": [
+              "openAIApi"
+            ],
+            "id": "chatOpenAI_0-input-credential-credential"
+          },
+          {
+            "label": "Model Name",
+            "name": "modelName",
+            "type": "asyncOptions",
+            "loadMethod": "listModels",
+            "default": "gpt-3.5-turbo",
+            "id": "chatOpenAI_0-input-modelName-asyncOptions"
+          },
+          {
+            "label": "Temperature",
+            "name": "temperature",
+            "type": "number",
+            "step": 0.1,
+            "default": 0.9,
+            "optional": true,
+            "id": "chatOpenAI_0-input-temperature-number"
+          },
+          {
+            "label": "Max Tokens",
+            "name": "maxTokens",
+            "type": "number",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-maxTokens-number"
+          },
+          {
+            "label": "Top Probability",
+            "name": "topP",
+            "type": "number",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-topP-number"
+          },
+          {
+            "label": "Frequency Penalty",
+            "name": "frequencyPenalty",
+            "type": "number",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-frequencyPenalty-number"
+          },
+          {
+            "label": "Presence Penalty",
+            "name": "presencePenalty",
+            "type": "number",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-presencePenalty-number"
+          },
+          {
+            "label": "Timeout",
+            "name": "timeout",
+            "type": "number",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-timeout-number"
+          },
+          {
+            "label": "BasePath",
+            "name": "basepath",
+            "type": "string",
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-basepath-string"
+          },
+          {
+            "label": "BaseOptions",
+            "name": "baseOptions",
+            "type": "json",
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-baseOptions-json"
+          },
+          {
+            "label": "Allow Image Uploads",
+            "name": "allowImageUploads",
+            "type": "boolean",
+            "description": "Automatically uses gpt-4-vision-preview when image is being uploaded from chat. Only works with LLMChain, Conversation Chain, ReAct Agent, and Conversational Agent",
+            "default": false,
+            "optional": true,
+            "id": "chatOpenAI_0-input-allowImageUploads-boolean"
+          },
+          {
+            "label": "Image Resolution",
+            "description": "This parameter controls the resolution in which the model views the image.",
+            "name": "imageResolution",
+            "type": "options",
+            "options": [
+              {
+                "label": "Low",
+                "name": "low"
+              },
+              {
+                "label": "High",
+                "name": "high"
+              },
+              {
+                "label": "Auto",
+                "name": "auto"
+              }
+            ],
+            "default": "low",
+            "optional": false,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-imageResolution-options"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Cache",
+            "name": "cache",
+            "type": "BaseCache",
+            "optional": true,
+            "id": "chatOpenAI_0-input-cache-BaseCache"
+          }
+        ],
+        "inputs": {
+          "cache": "",
+          "modelName": "gpt-4o-mini",
+          "temperature": "0.4",
+          "maxTokens": "",
+          "topP": "",
+          "frequencyPenalty": "",
+          "presencePenalty": "",
+          "timeout": "",
+          "basepath": "",
+          "baseOptions": "",
+          "allowImageUploads": true,
+          "imageResolution": "low"
+        },
+        "outputAnchors": [
+          {
+            "id": "chatOpenAI_0-output-chatOpenAI-ChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable",
+            "name": "chatOpenAI",
+            "label": "ChatOpenAI",
+            "description": "Wrapper around OpenAI large language models that use the Chat endpoint",
+            "type": "ChatOpenAI | BaseChatModel | BaseLanguageModel | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 669,
+      "selected": false,
+      "positionAbsolute": {
+        "x": -16.318716709910944,
+        "y": -825.0010185064682
+      },
+      "dragging": false
+    },
+    {
+      "id": "seqAgent_0",
+      "position": {
+        "x": 1086.1751580041714,
+        "y": -506.4744968589905
+      },
+      "type": "customNode",
+      "data": {
+        "id": "seqAgent_0",
+        "label": "Agent",
+        "version": 2,
+        "name": "seqAgent",
+        "type": "Agent",
+        "baseClasses": [
+          "Agent"
+        ],
+        "category": "Sequential Agents",
+        "description": "Agent that can execute tools",
+        "inputParams": [
+          {
+            "label": "Agent Name",
+            "name": "agentName",
+            "type": "string",
+            "placeholder": "Agent",
+            "id": "seqAgent_0-input-agentName-string"
+          },
+          {
+            "label": "System Prompt",
+            "name": "systemMessagePrompt",
+            "type": "string",
+            "rows": 4,
+            "optional": true,
+            "default": "You are a research assistant who can search for up-to-date info using search engine.",
+            "id": "seqAgent_0-input-systemMessagePrompt-string"
+          },
+          {
+            "label": "Human Prompt",
+            "name": "humanMessagePrompt",
+            "type": "string",
+            "description": "This prompt will be added at the end of the messages as human message",
+            "rows": 4,
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_0-input-humanMessagePrompt-string"
+          },
+          {
+            "label": "Require Approval",
+            "name": "interrupt",
+            "description": "Require approval before executing tools. Will proceed when tools are not called",
+            "type": "boolean",
+            "optional": true,
+            "id": "seqAgent_0-input-interrupt-boolean"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "description": "Assign values to the prompt variables. You can also use $flow.state.<variable-name> to get the state value",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "seqAgent_0-input-promptValues-json"
+          },
+          {
+            "label": "Approval Prompt",
+            "name": "approvalPrompt",
+            "description": "Prompt for approval. Only applicable if \"Require Approval\" is enabled",
+            "type": "string",
+            "default": "You are about to execute tool: {tools}. Ask if user want to proceed",
+            "rows": 4,
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_0-input-approvalPrompt-string"
+          },
+          {
+            "label": "Approve Button Text",
+            "name": "approveButtonText",
+            "description": "Text for approve button. Only applicable if \"Require Approval\" is enabled",
+            "type": "string",
+            "default": "Yes",
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_0-input-approveButtonText-string"
+          },
+          {
+            "label": "Reject Button Text",
+            "name": "rejectButtonText",
+            "description": "Text for reject button. Only applicable if \"Require Approval\" is enabled",
+            "type": "string",
+            "default": "No",
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_0-input-rejectButtonText-string"
+          },
+          {
+            "label": "Update State",
+            "name": "updateStateMemory",
+            "type": "tabs",
+            "tabIdentifier": "selectedUpdateStateMemoryTab",
+            "additionalParams": true,
+            "default": "updateStateMemoryUI",
+            "tabs": [
+              {
+                "label": "Update State (Table)",
+                "name": "updateStateMemoryUI",
+                "type": "datagrid",
+                "hint": {
+                  "label": "How to use",
+                  "value": "\n1. Key and value pair to be updated. For example: if you have the following State:\n    | Key       | Operation     | Default Value     |\n    |-----------|---------------|-------------------|\n    | user      | Replace       |                   |\n\n    You can update the \"user\" value with the following:\n    | Key       | Value     |\n    |-----------|-----------|\n    | user      | john doe  |\n\n2. If you want to use the agent's output as the value to update state, it is available as available as `$flow.output` with the following structure:\n    ```json\n    {\n        \"output\": \"Hello! How can I assist you today?\",\n        \"usedTools\": [\n            {\n                \"tool\": \"tool-name\",\n                \"toolInput\": \"{foo: var}\",\n                \"toolOutput\": \"This is the tool's output\"\n            }\n        ],\n        \"sourceDocuments\": [\n            {\n                \"pageContent\": \"This is the page content\",\n                \"metadata\": \"{foo: var}\",\n            }\n        ],\n    }\n    ```\n\n    For example, if the `toolOutput` is the value you want to update the state with, you can do the following:\n    | Key       | Value                                     |\n    |-----------|-------------------------------------------|\n    | user      | `$flow.output.usedTools[0].toolOutput`  |\n\n3. You can get default flow config, including the current \"state\":\n    - `$flow.sessionId`\n    - `$flow.chatId`\n    - `$flow.chatflowId`\n    - `$flow.input`\n    - `$flow.state`\n\n4. You can get custom variables: `$vars.<variable-name>`\n\n"
+                },
+                "description": "This is only applicable when you have a custom State at the START node. After agent execution, you might want to update the State values",
+                "datagrid": [
+                  {
+                    "field": "key",
+                    "headerName": "Key",
+                    "type": "asyncSingleSelect",
+                    "loadMethod": "loadStateKeys",
+                    "flex": 0.5,
+                    "editable": true
+                  },
+                  {
+                    "field": "value",
+                    "headerName": "Value",
+                    "type": "freeSolo",
+                    "valueOptions": [
+                      {
+                        "label": "Agent Output (string)",
+                        "value": "$flow.output.content"
+                      },
+                      {
+                        "label": "Used Tools (array)",
+                        "value": "$flow.output.usedTools"
+                      },
+                      {
+                        "label": "First Tool Output (string)",
+                        "value": "$flow.output.usedTools[0].toolOutput"
+                      },
+                      {
+                        "label": "Source Documents (array)",
+                        "value": "$flow.output.sourceDocuments"
+                      },
+                      {
+                        "label": "Global variable (string)",
+                        "value": "$vars.<variable-name>"
+                      },
+                      {
+                        "label": "Input Question (string)",
+                        "value": "$flow.input"
+                      },
+                      {
+                        "label": "Session Id (string)",
+                        "value": "$flow.sessionId"
+                      },
+                      {
+                        "label": "Chat Id (string)",
+                        "value": "$flow.chatId"
+                      },
+                      {
+                        "label": "Chatflow Id (string)",
+                        "value": "$flow.chatflowId"
+                      }
+                    ],
+                    "editable": true,
+                    "flex": 1
+                  }
+                ],
+                "optional": true,
+                "additionalParams": true
+              },
+              {
+                "label": "Update State (Code)",
+                "name": "updateStateMemoryCode",
+                "type": "code",
+                "hint": {
+                  "label": "How to use",
+                  "value": "\n1. Return the key value JSON object. For example: if you have the following State:\n    ```json\n    {\n        \"user\": null\n    }\n    ```\n\n    You can update the \"user\" value by returning the following:\n    ```js\n    return {\n        \"user\": \"john doe\"\n    }\n    ```\n\n2. If you want to use the agent's output as the value to update state, it is available as `$flow.output` with the following structure:\n    ```json\n    {\n        \"content\": \"Hello! How can I assist you today?\",\n        \"usedTools\": [\n            {\n                \"tool\": \"tool-name\",\n                \"toolInput\": \"{foo: var}\",\n                \"toolOutput\": \"This is the tool's output\"\n            }\n        ],\n        \"sourceDocuments\": [\n            {\n                \"pageContent\": \"This is the page content\",\n                \"metadata\": \"{foo: var}\",\n            }\n        ],\n    }\n    ```\n\n    For example, if the `toolOutput` is the value you want to update the state with, you can return the following:\n    ```js\n    return {\n        \"user\": $flow.output.usedTools[0].toolOutput\n    }\n    ```\n\n3. You can also get default flow config, including the current \"state\":\n    - `$flow.sessionId`\n    - `$flow.chatId`\n    - `$flow.chatflowId`\n    - `$flow.input`\n    - `$flow.state`\n\n4. You can get custom variables: `$vars.<variable-name>`\n\n"
+                },
+                "description": "This is only applicable when you have a custom State at the START node. After agent execution, you might want to update the State values. Must return an object representing the state",
+                "hideCodeExecute": true,
+                "codeExample": "const result = $flow.output;\n\n/* Suppose we have a custom State schema like this:\n* {\n    aggregate: {\n        value: (x, y) => x.concat(y),\n        default: () => []\n    }\n  }\n*/\n\nreturn {\n  aggregate: [result.content]\n};",
+                "optional": true,
+                "additionalParams": true
+              }
+            ],
+            "id": "seqAgent_0-input-updateStateMemory-tabs"
+          },
+          {
+            "label": "Max Iterations",
+            "name": "maxIterations",
+            "type": "number",
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_0-input-maxIterations-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tools",
+            "name": "tools",
+            "type": "Tool",
+            "list": true,
+            "optional": true,
+            "id": "seqAgent_0-input-tools-Tool"
+          },
+          {
+            "label": "Start | Agent | Condition | LLM | Tool Node",
+            "name": "sequentialNode",
+            "type": "Start | Agent | Condition | LLMNode | ToolNode",
+            "list": true,
+            "id": "seqAgent_0-input-sequentialNode-Start | Agent | Condition | LLMNode | ToolNode"
+          },
+          {
+            "label": "Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "optional": true,
+            "description": "Overwrite model to be used for this agent",
+            "id": "seqAgent_0-input-model-BaseChatModel"
+          }
+        ],
+        "inputs": {
+          "agentName": "payment",
+          "systemMessagePrompt": "-this is the agent who is in charge of paying the bill, or anything with payment.\n-read the file kazne.csv\n-just ask for the fine ID that client wants to pay.\n-if there is not fine ID that client entered  say wrong fine ID.\n-if fine have status \"plaćeno\" say that fine is payed and end conversation.\n-send message with informations about fine under that ID.\n-ask for card number and then PIN for paying.\n-after payment make sure that you ONLY change status of that fine in last column with that ID in \"plaćeno\".\n-other fine's need to stay in document unchanged\n\n\n\n\n\n\n",
+          "humanMessagePrompt": "",
+          "tools": [
+            "{{readFile_0.data.instance}}",
+            "{{writeFile_0.data.instance}}"
+          ],
+          "sequentialNode": [
+            "{{seqConditionAgent_0.data.instance}}",
+            "{{seqConditionAgent_0.data.instance}}"
+          ],
+          "model": "",
+          "interrupt": "",
+          "promptValues": "",
+          "approvalPrompt": "You are about to execute tool: {tools}. Ask if user want to proceed",
+          "approveButtonText": "Yes",
+          "rejectButtonText": "No",
+          "updateStateMemory": "updateStateMemoryUI",
+          "maxIterations": "",
+          "selectedUpdateStateMemoryTab_seqAgent_0": "updateStateMemoryUI"
+        },
+        "outputAnchors": [
+          {
+            "id": "seqAgent_0-output-seqAgent-Agent",
+            "name": "seqAgent",
+            "label": "Agent",
+            "description": "Agent that can execute tools",
+            "type": "Agent"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 877,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1086.1751580041714,
+        "y": -506.4744968589905
+      },
+      "dragging": false
+    },
+    {
+      "id": "seqConditionAgent_0",
+      "position": {
+        "x": 350.53613182052914,
+        "y": -824.6032334882253
+      },
+      "type": "customNode",
+      "data": {
+        "id": "seqConditionAgent_0",
+        "label": "Condition Agent",
+        "version": 2,
+        "name": "seqConditionAgent",
+        "type": "ConditionAgent",
+        "baseClasses": [
+          "ConditionAgent"
+        ],
+        "category": "Sequential Agents",
+        "description": "Uses an agent to determine which route to take next",
+        "inputParams": [
+          {
+            "label": "Name",
+            "name": "conditionAgentName",
+            "type": "string",
+            "placeholder": "Condition Agent",
+            "id": "seqConditionAgent_0-input-conditionAgentName-string"
+          },
+          {
+            "label": "System Prompt",
+            "name": "systemMessagePrompt",
+            "type": "string",
+            "rows": 4,
+            "default": "You are an expert customer support routing system.\nYour job is to detect whether a customer support representative is routing a user to the technical support team, or just responding conversationally.",
+            "additionalParams": true,
+            "optional": true,
+            "id": "seqConditionAgent_0-input-systemMessagePrompt-string"
+          },
+          {
+            "label": "Human Prompt",
+            "name": "humanMessagePrompt",
+            "type": "string",
+            "description": "This prompt will be added at the end of the messages as human message",
+            "rows": 4,
+            "default": "The previous conversation is an interaction between a customer support representative and a user.\nExtract whether the representative is routing the user to the technical support team, or just responding conversationally.\n\nIf representative want to route the user to the technical support team, respond only with the word \"TECHNICAL\".\nOtherwise, respond only with the word \"CONVERSATION\".\n\nRemember, only respond with one of the above words.",
+            "additionalParams": true,
+            "optional": true,
+            "id": "seqConditionAgent_0-input-humanMessagePrompt-string"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "description": "Assign values to the prompt variables. You can also use $flow.state.<variable-name> to get the state value",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "additionalParams": true,
+            "id": "seqConditionAgent_0-input-promptValues-json"
+          },
+          {
+            "label": "JSON Structured Output",
+            "name": "conditionAgentStructuredOutput",
+            "type": "datagrid",
+            "description": "Instruct the LLM to give output in a JSON structured schema",
+            "datagrid": [
+              {
+                "field": "key",
+                "headerName": "Key",
+                "editable": true
+              },
+              {
+                "field": "type",
+                "headerName": "Type",
+                "type": "singleSelect",
+                "valueOptions": [
+                  "String",
+                  "String Array",
+                  "Number",
+                  "Boolean",
+                  "Enum"
+                ],
+                "editable": true
+              },
+              {
+                "field": "enumValues",
+                "headerName": "Enum Values",
+                "editable": true
+              },
+              {
+                "field": "description",
+                "headerName": "Description",
+                "flex": 1,
+                "editable": true
+              }
+            ],
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqConditionAgent_0-input-conditionAgentStructuredOutput-datagrid"
+          },
+          {
+            "label": "Condition",
+            "name": "condition",
+            "type": "conditionFunction",
+            "tabIdentifier": "selectedConditionFunctionTab",
+            "tabs": [
+              {
+                "label": "Condition (Table)",
+                "name": "conditionUI",
+                "type": "datagrid",
+                "description": "If a condition is met, the node connected to the respective output will be executed",
+                "optional": true,
+                "datagrid": [
+                  {
+                    "field": "variable",
+                    "headerName": "Variable",
+                    "type": "freeSolo",
+                    "editable": true,
+                    "loadMethod": [
+                      "getPreviousMessages",
+                      "loadStateKeys"
+                    ],
+                    "valueOptions": [
+                      {
+                        "label": "Agent Output (string)",
+                        "value": "$flow.output.content"
+                      },
+                      {
+                        "label": "Agent's JSON Key Output (string)",
+                        "value": "$flow.output.<replace-with-key>"
+                      },
+                      {
+                        "label": "Total Messages (number)",
+                        "value": "$flow.state.messages.length"
+                      },
+                      {
+                        "label": "First Message Content (string)",
+                        "value": "$flow.state.messages[0].content"
+                      },
+                      {
+                        "label": "Last Message Content (string)",
+                        "value": "$flow.state.messages[-1].content"
+                      },
+                      {
+                        "label": "Global variable (string)",
+                        "value": "$vars.<variable-name>"
+                      }
+                    ],
+                    "flex": 0.5,
+                    "minWidth": 200
+                  },
+                  {
+                    "field": "operation",
+                    "headerName": "Operation",
+                    "type": "singleSelect",
+                    "valueOptions": [
+                      "Contains",
+                      "Not Contains",
+                      "Start With",
+                      "End With",
+                      "Is",
+                      "Is Not",
+                      "Is Empty",
+                      "Is Not Empty",
+                      "Greater Than",
+                      "Less Than",
+                      "Equal To",
+                      "Not Equal To",
+                      "Greater Than or Equal To",
+                      "Less Than or Equal To"
+                    ],
+                    "editable": true,
+                    "flex": 0.4,
+                    "minWidth": 150
+                  },
+                  {
+                    "field": "value",
+                    "headerName": "Value",
+                    "flex": 1,
+                    "editable": true
+                  },
+                  {
+                    "field": "output",
+                    "headerName": "Output Name",
+                    "editable": true,
+                    "flex": 0.3,
+                    "minWidth": 150
+                  }
+                ]
+              },
+              {
+                "label": "Condition (Code)",
+                "name": "conditionFunction",
+                "type": "code",
+                "description": "Function to evaluate the condition",
+                "hint": {
+                  "label": "How to use",
+                  "value": "\n1. Must return a string value at the end of function. For example:\n    ```js\n    if (\"X\" === \"X\") {\n        return \"Agent\"; // connect to next agent node\n    } else {\n        return \"End\"; // connect to end node\n    }\n    ```\n\n2. In most cases, you would probably get the last message to do some comparison. You can get all current messages from the state: `$flow.state.messages`:\n    ```json\n    [\n        {\n            \"content\": \"Hello! How can I assist you today?\",\n            \"name\": \"\",\n            \"additional_kwargs\": {},\n            \"response_metadata\": {},\n            \"tool_calls\": [],\n            \"invalid_tool_calls\": [],\n            \"usage_metadata\": {}\n        }\n    ]\n    ```\n\n    For example, to get the last message content:\n    ```js\n    const messages = $flow.state.messages;\n    const lastMessage = messages[messages.length - 1];\n\n    // Proceed to do something with the last message content\n    ```\n\n3. If you want to use the Condition Agent's output for conditional checks, it is available as `$flow.output` with the following structure:\n\n    ```json\n    {\n        \"content\": 'Hello! How can I assist you today?',\n        \"name\": \"\",\n        \"additional_kwargs\": {},\n        \"response_metadata\": {},\n        \"tool_calls\": [],\n        \"invalid_tool_calls\": [],\n        \"usage_metadata\": {}\n    }\n    ```\n\n    For example, we can check if the agent's output contains specific keyword:\n    ```js\n    const result = $flow.output.content;\n    \n    if (result.includes(\"some-keyword\")) {\n        return \"Agent\"; // connect to next agent node\n    } else {\n        return \"End\"; // connect to end node\n    }\n    ```\n\n    If Structured Output is enabled, `$flow.output` will be in the JSON format as defined in the Structured Output configuration:\n    ```json\n    {\n        \"foo\": 'var'\n    }\n    ```\n\n4. You can get default flow config, including the current \"state\":\n    - `$flow.sessionId`\n    - `$flow.chatId`\n    - `$flow.chatflowId`\n    - `$flow.input`\n    - `$flow.state`\n\n5. You can get custom variables: `$vars.<variable-name>`\n\n"
+                },
+                "hideCodeExecute": true,
+                "codeExample": "const result = $flow.output.content;\n\nif (result.includes(\"some-keyword\")) {\n    return \"Agent\";\n}\n\nreturn \"End\";\n",
+                "optional": true
+              }
+            ],
+            "id": "seqConditionAgent_0-input-condition-conditionFunction"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Start | Agent | LLM | Tool Node",
+            "name": "sequentialNode",
+            "type": "Start | Agent | LLMNode | ToolNode",
+            "list": true,
+            "id": "seqConditionAgent_0-input-sequentialNode-Start | Agent | LLMNode | ToolNode"
+          },
+          {
+            "label": "Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "optional": true,
+            "description": "Overwrite model to be used for this agent",
+            "id": "seqConditionAgent_0-input-model-BaseChatModel"
+          }
+        ],
+        "inputs": {
+          "conditionAgentName": "Route agent",
+          "sequentialNode": [
+            "{{seqStart_0.data.instance}}"
+          ],
+          "model": "",
+          "systemMessagePrompt": "your job is to guide the user according to the desired police apartment sector.\nbased on the user's messages, you can conclude whether he wants to report a traffic accident, call fo policemans help, or wants to pay the fine/bill",
+          "humanMessagePrompt": "the conversation is between the AI agent in the police departmen and client. based on the conversation, conclude whether the user needs to pay a fine, report a traffic accident or needs policeman\n\nif the user mentions bills or fines , then respond with \"payment\".\n\nif the user mentions traffic and accident, respond with \"accident_report\".\n\nif the user indicates that he needs a boss or a real person to respond with \"support\".\n\nAnswer only with the answers provided above.",
+          "promptValues": "",
+          "conditionAgentStructuredOutput": "[{\"key\":\"route\",\"type\":\"Enum\",\"enumValues\":\"payment, accident_report, support\",\"description\":\"route a customer\",\"actions\":\"\",\"id\":0}]",
+          "condition": "",
+          "selectedConditionFunctionTab_seqConditionAgent_0": "conditionFunction",
+          "conditionFunction": "const result = $flow.output.route;\n\nif (result.includes(\"payment\")) {\n    return \"payment\";\n}\nif (result.includes(\"accident_report\")) {\n    return \"accident_report\";\n}\n\nif (result.includes(\"support\")) {\n    return \"support\";\n}\n\nreturn \"End\";\n"
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "description": "",
+            "options": [
+              {
+                "id": "seqConditionAgent_0-output-end-Condition",
+                "name": "end",
+                "label": "End",
+                "type": "Condition",
+                "isAnchor": true
+              },
+              {
+                "id": "seqConditionAgent_0-output-accident_report-Condition",
+                "name": "accident_report",
+                "label": "accident_report",
+                "type": "Condition",
+                "isAnchor": true
+              },
+              {
+                "id": "seqConditionAgent_0-output-payment-Condition",
+                "name": "payment",
+                "label": "payment",
+                "type": "Condition",
+                "isAnchor": true
+              },
+              {
+                "id": "seqConditionAgent_0-output-support-Condition",
+                "name": "support",
+                "label": "support",
+                "type": "Condition",
+                "isAnchor": true
+              }
+            ],
+            "default": "next"
+          }
+        ],
+        "outputs": {
+          "output": "next"
+        },
+        "selected": false
+      },
+      "width": 300,
+      "height": 678,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 350.53613182052914,
+        "y": -824.6032334882253
+      }
+    },
+    {
+      "id": "seqAgent_1",
+      "position": {
+        "x": 1452.1581171777739,
+        "y": -505.3995941035855
+      },
+      "type": "customNode",
+      "data": {
+        "id": "seqAgent_1",
+        "label": "Agent",
+        "version": 2,
+        "name": "seqAgent",
+        "type": "Agent",
+        "baseClasses": [
+          "Agent"
+        ],
+        "category": "Sequential Agents",
+        "description": "Agent that can execute tools",
+        "inputParams": [
+          {
+            "label": "Agent Name",
+            "name": "agentName",
+            "type": "string",
+            "placeholder": "Agent",
+            "id": "seqAgent_1-input-agentName-string"
+          },
+          {
+            "label": "System Prompt",
+            "name": "systemMessagePrompt",
+            "type": "string",
+            "rows": 4,
+            "optional": true,
+            "default": "You are a research assistant who can search for up-to-date info using search engine.",
+            "id": "seqAgent_1-input-systemMessagePrompt-string"
+          },
+          {
+            "label": "Human Prompt",
+            "name": "humanMessagePrompt",
+            "type": "string",
+            "description": "This prompt will be added at the end of the messages as human message",
+            "rows": 4,
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_1-input-humanMessagePrompt-string"
+          },
+          {
+            "label": "Require Approval",
+            "name": "interrupt",
+            "description": "Require approval before executing tools. Will proceed when tools are not called",
+            "type": "boolean",
+            "optional": true,
+            "id": "seqAgent_1-input-interrupt-boolean"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "description": "Assign values to the prompt variables. You can also use $flow.state.<variable-name> to get the state value",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "seqAgent_1-input-promptValues-json"
+          },
+          {
+            "label": "Approval Prompt",
+            "name": "approvalPrompt",
+            "description": "Prompt for approval. Only applicable if \"Require Approval\" is enabled",
+            "type": "string",
+            "default": "You are about to execute tool: {tools}. Ask if user want to proceed",
+            "rows": 4,
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_1-input-approvalPrompt-string"
+          },
+          {
+            "label": "Approve Button Text",
+            "name": "approveButtonText",
+            "description": "Text for approve button. Only applicable if \"Require Approval\" is enabled",
+            "type": "string",
+            "default": "Yes",
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_1-input-approveButtonText-string"
+          },
+          {
+            "label": "Reject Button Text",
+            "name": "rejectButtonText",
+            "description": "Text for reject button. Only applicable if \"Require Approval\" is enabled",
+            "type": "string",
+            "default": "No",
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_1-input-rejectButtonText-string"
+          },
+          {
+            "label": "Update State",
+            "name": "updateStateMemory",
+            "type": "tabs",
+            "tabIdentifier": "selectedUpdateStateMemoryTab",
+            "additionalParams": true,
+            "default": "updateStateMemoryUI",
+            "tabs": [
+              {
+                "label": "Update State (Table)",
+                "name": "updateStateMemoryUI",
+                "type": "datagrid",
+                "hint": {
+                  "label": "How to use",
+                  "value": "\n1. Key and value pair to be updated. For example: if you have the following State:\n    | Key       | Operation     | Default Value     |\n    |-----------|---------------|-------------------|\n    | user      | Replace       |                   |\n\n    You can update the \"user\" value with the following:\n    | Key       | Value     |\n    |-----------|-----------|\n    | user      | john doe  |\n\n2. If you want to use the agent's output as the value to update state, it is available as available as `$flow.output` with the following structure:\n    ```json\n    {\n        \"output\": \"Hello! How can I assist you today?\",\n        \"usedTools\": [\n            {\n                \"tool\": \"tool-name\",\n                \"toolInput\": \"{foo: var}\",\n                \"toolOutput\": \"This is the tool's output\"\n            }\n        ],\n        \"sourceDocuments\": [\n            {\n                \"pageContent\": \"This is the page content\",\n                \"metadata\": \"{foo: var}\",\n            }\n        ],\n    }\n    ```\n\n    For example, if the `toolOutput` is the value you want to update the state with, you can do the following:\n    | Key       | Value                                     |\n    |-----------|-------------------------------------------|\n    | user      | `$flow.output.usedTools[0].toolOutput`  |\n\n3. You can get default flow config, including the current \"state\":\n    - `$flow.sessionId`\n    - `$flow.chatId`\n    - `$flow.chatflowId`\n    - `$flow.input`\n    - `$flow.state`\n\n4. You can get custom variables: `$vars.<variable-name>`\n\n"
+                },
+                "description": "This is only applicable when you have a custom State at the START node. After agent execution, you might want to update the State values",
+                "datagrid": [
+                  {
+                    "field": "key",
+                    "headerName": "Key",
+                    "type": "asyncSingleSelect",
+                    "loadMethod": "loadStateKeys",
+                    "flex": 0.5,
+                    "editable": true
+                  },
+                  {
+                    "field": "value",
+                    "headerName": "Value",
+                    "type": "freeSolo",
+                    "valueOptions": [
+                      {
+                        "label": "Agent Output (string)",
+                        "value": "$flow.output.content"
+                      },
+                      {
+                        "label": "Used Tools (array)",
+                        "value": "$flow.output.usedTools"
+                      },
+                      {
+                        "label": "First Tool Output (string)",
+                        "value": "$flow.output.usedTools[0].toolOutput"
+                      },
+                      {
+                        "label": "Source Documents (array)",
+                        "value": "$flow.output.sourceDocuments"
+                      },
+                      {
+                        "label": "Global variable (string)",
+                        "value": "$vars.<variable-name>"
+                      },
+                      {
+                        "label": "Input Question (string)",
+                        "value": "$flow.input"
+                      },
+                      {
+                        "label": "Session Id (string)",
+                        "value": "$flow.sessionId"
+                      },
+                      {
+                        "label": "Chat Id (string)",
+                        "value": "$flow.chatId"
+                      },
+                      {
+                        "label": "Chatflow Id (string)",
+                        "value": "$flow.chatflowId"
+                      }
+                    ],
+                    "editable": true,
+                    "flex": 1
+                  }
+                ],
+                "optional": true,
+                "additionalParams": true
+              },
+              {
+                "label": "Update State (Code)",
+                "name": "updateStateMemoryCode",
+                "type": "code",
+                "hint": {
+                  "label": "How to use",
+                  "value": "\n1. Return the key value JSON object. For example: if you have the following State:\n    ```json\n    {\n        \"user\": null\n    }\n    ```\n\n    You can update the \"user\" value by returning the following:\n    ```js\n    return {\n        \"user\": \"john doe\"\n    }\n    ```\n\n2. If you want to use the agent's output as the value to update state, it is available as `$flow.output` with the following structure:\n    ```json\n    {\n        \"content\": \"Hello! How can I assist you today?\",\n        \"usedTools\": [\n            {\n                \"tool\": \"tool-name\",\n                \"toolInput\": \"{foo: var}\",\n                \"toolOutput\": \"This is the tool's output\"\n            }\n        ],\n        \"sourceDocuments\": [\n            {\n                \"pageContent\": \"This is the page content\",\n                \"metadata\": \"{foo: var}\",\n            }\n        ],\n    }\n    ```\n\n    For example, if the `toolOutput` is the value you want to update the state with, you can return the following:\n    ```js\n    return {\n        \"user\": $flow.output.usedTools[0].toolOutput\n    }\n    ```\n\n3. You can also get default flow config, including the current \"state\":\n    - `$flow.sessionId`\n    - `$flow.chatId`\n    - `$flow.chatflowId`\n    - `$flow.input`\n    - `$flow.state`\n\n4. You can get custom variables: `$vars.<variable-name>`\n\n"
+                },
+                "description": "This is only applicable when you have a custom State at the START node. After agent execution, you might want to update the State values. Must return an object representing the state",
+                "hideCodeExecute": true,
+                "codeExample": "const result = $flow.output;\n\n/* Suppose we have a custom State schema like this:\n* {\n    aggregate: {\n        value: (x, y) => x.concat(y),\n        default: () => []\n    }\n  }\n*/\n\nreturn {\n  aggregate: [result.content]\n};",
+                "optional": true,
+                "additionalParams": true
+              }
+            ],
+            "id": "seqAgent_1-input-updateStateMemory-tabs"
+          },
+          {
+            "label": "Max Iterations",
+            "name": "maxIterations",
+            "type": "number",
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_1-input-maxIterations-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tools",
+            "name": "tools",
+            "type": "Tool",
+            "list": true,
+            "optional": true,
+            "id": "seqAgent_1-input-tools-Tool"
+          },
+          {
+            "label": "Start | Agent | Condition | LLM | Tool Node",
+            "name": "sequentialNode",
+            "type": "Start | Agent | Condition | LLMNode | ToolNode",
+            "list": true,
+            "id": "seqAgent_1-input-sequentialNode-Start | Agent | Condition | LLMNode | ToolNode"
+          },
+          {
+            "label": "Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "optional": true,
+            "description": "Overwrite model to be used for this agent",
+            "id": "seqAgent_1-input-model-BaseChatModel"
+          }
+        ],
+        "inputs": {
+          "agentName": "accident_report",
+          "systemMessagePrompt": "you work in a police department and you are in charge to write an report based on uploaded picture of accident. \n\n-first ask client to upload pictures.\n\n-then make short report about you see on picture, colour of the car, what is crashed, is it day or night, is it rainy or foggy wether etc.\n\n-then ask client next questions one by one:\nWhat happened just before the accident?\n\n\n-after all questions are answered make report and write file with tool based on answers in few sentances in izvještaj.txt\n\n-give client a fully report\n\n-thank the client\n\n\n\n\n\n",
+          "humanMessagePrompt": "",
+          "tools": [
+            "{{writeFile_1.data.instance}}"
+          ],
+          "sequentialNode": [
+            "{{seqConditionAgent_0.data.instance}}",
+            "{{seqConditionAgent_0.data.instance}}"
+          ],
+          "model": "",
+          "interrupt": false,
+          "promptValues": "",
+          "approvalPrompt": "If someone ask for report then read the {tools}",
+          "approveButtonText": "Yes",
+          "rejectButtonText": "No",
+          "updateStateMemory": "updateStateMemoryUI",
+          "maxIterations": "",
+          "selectedUpdateStateMemoryTab_seqAgent_1": "updateStateMemoryUI"
+        },
+        "outputAnchors": [
+          {
+            "id": "seqAgent_1-output-seqAgent-Agent",
+            "name": "seqAgent",
+            "label": "Agent",
+            "description": "Agent that can execute tools",
+            "type": "Agent"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 877,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1452.1581171777739,
+        "y": -505.3995941035855
+      },
+      "dragging": false
+    },
+    {
+      "id": "seqAgent_2",
+      "position": {
+        "x": 720.7847594003305,
+        "y": -500.5835563244211
+      },
+      "type": "customNode",
+      "data": {
+        "id": "seqAgent_2",
+        "label": "Agent",
+        "version": 2,
+        "name": "seqAgent",
+        "type": "Agent",
+        "baseClasses": [
+          "Agent"
+        ],
+        "category": "Sequential Agents",
+        "description": "Agent that can execute tools",
+        "inputParams": [
+          {
+            "label": "Agent Name",
+            "name": "agentName",
+            "type": "string",
+            "placeholder": "Agent",
+            "id": "seqAgent_2-input-agentName-string"
+          },
+          {
+            "label": "System Prompt",
+            "name": "systemMessagePrompt",
+            "type": "string",
+            "rows": 4,
+            "optional": true,
+            "default": "You are a research assistant who can search for up-to-date info using search engine.",
+            "id": "seqAgent_2-input-systemMessagePrompt-string"
+          },
+          {
+            "label": "Human Prompt",
+            "name": "humanMessagePrompt",
+            "type": "string",
+            "description": "This prompt will be added at the end of the messages as human message",
+            "rows": 4,
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_2-input-humanMessagePrompt-string"
+          },
+          {
+            "label": "Require Approval",
+            "name": "interrupt",
+            "description": "Require approval before executing tools. Will proceed when tools are not called",
+            "type": "boolean",
+            "optional": true,
+            "id": "seqAgent_2-input-interrupt-boolean"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "description": "Assign values to the prompt variables. You can also use $flow.state.<variable-name> to get the state value",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "seqAgent_2-input-promptValues-json"
+          },
+          {
+            "label": "Approval Prompt",
+            "name": "approvalPrompt",
+            "description": "Prompt for approval. Only applicable if \"Require Approval\" is enabled",
+            "type": "string",
+            "default": "You are about to execute tool: {tools}. Ask if user want to proceed",
+            "rows": 4,
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_2-input-approvalPrompt-string"
+          },
+          {
+            "label": "Approve Button Text",
+            "name": "approveButtonText",
+            "description": "Text for approve button. Only applicable if \"Require Approval\" is enabled",
+            "type": "string",
+            "default": "Yes",
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_2-input-approveButtonText-string"
+          },
+          {
+            "label": "Reject Button Text",
+            "name": "rejectButtonText",
+            "description": "Text for reject button. Only applicable if \"Require Approval\" is enabled",
+            "type": "string",
+            "default": "No",
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_2-input-rejectButtonText-string"
+          },
+          {
+            "label": "Update State",
+            "name": "updateStateMemory",
+            "type": "tabs",
+            "tabIdentifier": "selectedUpdateStateMemoryTab",
+            "additionalParams": true,
+            "default": "updateStateMemoryUI",
+            "tabs": [
+              {
+                "label": "Update State (Table)",
+                "name": "updateStateMemoryUI",
+                "type": "datagrid",
+                "hint": {
+                  "label": "How to use",
+                  "value": "\n1. Key and value pair to be updated. For example: if you have the following State:\n    | Key       | Operation     | Default Value     |\n    |-----------|---------------|-------------------|\n    | user      | Replace       |                   |\n\n    You can update the \"user\" value with the following:\n    | Key       | Value     |\n    |-----------|-----------|\n    | user      | john doe  |\n\n2. If you want to use the agent's output as the value to update state, it is available as available as `$flow.output` with the following structure:\n    ```json\n    {\n        \"output\": \"Hello! How can I assist you today?\",\n        \"usedTools\": [\n            {\n                \"tool\": \"tool-name\",\n                \"toolInput\": \"{foo: var}\",\n                \"toolOutput\": \"This is the tool's output\"\n            }\n        ],\n        \"sourceDocuments\": [\n            {\n                \"pageContent\": \"This is the page content\",\n                \"metadata\": \"{foo: var}\",\n            }\n        ],\n    }\n    ```\n\n    For example, if the `toolOutput` is the value you want to update the state with, you can do the following:\n    | Key       | Value                                     |\n    |-----------|-------------------------------------------|\n    | user      | `$flow.output.usedTools[0].toolOutput`  |\n\n3. You can get default flow config, including the current \"state\":\n    - `$flow.sessionId`\n    - `$flow.chatId`\n    - `$flow.chatflowId`\n    - `$flow.input`\n    - `$flow.state`\n\n4. You can get custom variables: `$vars.<variable-name>`\n\n"
+                },
+                "description": "This is only applicable when you have a custom State at the START node. After agent execution, you might want to update the State values",
+                "datagrid": [
+                  {
+                    "field": "key",
+                    "headerName": "Key",
+                    "type": "asyncSingleSelect",
+                    "loadMethod": "loadStateKeys",
+                    "flex": 0.5,
+                    "editable": true
+                  },
+                  {
+                    "field": "value",
+                    "headerName": "Value",
+                    "type": "freeSolo",
+                    "valueOptions": [
+                      {
+                        "label": "Agent Output (string)",
+                        "value": "$flow.output.content"
+                      },
+                      {
+                        "label": "Used Tools (array)",
+                        "value": "$flow.output.usedTools"
+                      },
+                      {
+                        "label": "First Tool Output (string)",
+                        "value": "$flow.output.usedTools[0].toolOutput"
+                      },
+                      {
+                        "label": "Source Documents (array)",
+                        "value": "$flow.output.sourceDocuments"
+                      },
+                      {
+                        "label": "Global variable (string)",
+                        "value": "$vars.<variable-name>"
+                      },
+                      {
+                        "label": "Input Question (string)",
+                        "value": "$flow.input"
+                      },
+                      {
+                        "label": "Session Id (string)",
+                        "value": "$flow.sessionId"
+                      },
+                      {
+                        "label": "Chat Id (string)",
+                        "value": "$flow.chatId"
+                      },
+                      {
+                        "label": "Chatflow Id (string)",
+                        "value": "$flow.chatflowId"
+                      }
+                    ],
+                    "editable": true,
+                    "flex": 1
+                  }
+                ],
+                "optional": true,
+                "additionalParams": true
+              },
+              {
+                "label": "Update State (Code)",
+                "name": "updateStateMemoryCode",
+                "type": "code",
+                "hint": {
+                  "label": "How to use",
+                  "value": "\n1. Return the key value JSON object. For example: if you have the following State:\n    ```json\n    {\n        \"user\": null\n    }\n    ```\n\n    You can update the \"user\" value by returning the following:\n    ```js\n    return {\n        \"user\": \"john doe\"\n    }\n    ```\n\n2. If you want to use the agent's output as the value to update state, it is available as `$flow.output` with the following structure:\n    ```json\n    {\n        \"content\": \"Hello! How can I assist you today?\",\n        \"usedTools\": [\n            {\n                \"tool\": \"tool-name\",\n                \"toolInput\": \"{foo: var}\",\n                \"toolOutput\": \"This is the tool's output\"\n            }\n        ],\n        \"sourceDocuments\": [\n            {\n                \"pageContent\": \"This is the page content\",\n                \"metadata\": \"{foo: var}\",\n            }\n        ],\n    }\n    ```\n\n    For example, if the `toolOutput` is the value you want to update the state with, you can return the following:\n    ```js\n    return {\n        \"user\": $flow.output.usedTools[0].toolOutput\n    }\n    ```\n\n3. You can also get default flow config, including the current \"state\":\n    - `$flow.sessionId`\n    - `$flow.chatId`\n    - `$flow.chatflowId`\n    - `$flow.input`\n    - `$flow.state`\n\n4. You can get custom variables: `$vars.<variable-name>`\n\n"
+                },
+                "description": "This is only applicable when you have a custom State at the START node. After agent execution, you might want to update the State values. Must return an object representing the state",
+                "hideCodeExecute": true,
+                "codeExample": "const result = $flow.output;\n\n/* Suppose we have a custom State schema like this:\n* {\n    aggregate: {\n        value: (x, y) => x.concat(y),\n        default: () => []\n    }\n  }\n*/\n\nreturn {\n  aggregate: [result.content]\n};",
+                "optional": true,
+                "additionalParams": true
+              }
+            ],
+            "id": "seqAgent_2-input-updateStateMemory-tabs"
+          },
+          {
+            "label": "Max Iterations",
+            "name": "maxIterations",
+            "type": "number",
+            "optional": true,
+            "additionalParams": true,
+            "id": "seqAgent_2-input-maxIterations-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tools",
+            "name": "tools",
+            "type": "Tool",
+            "list": true,
+            "optional": true,
+            "id": "seqAgent_2-input-tools-Tool"
+          },
+          {
+            "label": "Start | Agent | Condition | LLM | Tool Node",
+            "name": "sequentialNode",
+            "type": "Start | Agent | Condition | LLMNode | ToolNode",
+            "list": true,
+            "id": "seqAgent_2-input-sequentialNode-Start | Agent | Condition | LLMNode | ToolNode"
+          },
+          {
+            "label": "Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "optional": true,
+            "description": "Overwrite model to be used for this agent",
+            "id": "seqAgent_2-input-model-BaseChatModel"
+          }
+        ],
+        "inputs": {
+          "agentName": "support",
+          "systemMessagePrompt": "this agent is in charge of calling the real person/policeman if its necessary",
+          "humanMessagePrompt": "",
+          "tools": "",
+          "sequentialNode": [
+            "{{seqConditionAgent_0.data.instance}}",
+            "{{seqConditionAgent_0.data.instance}}",
+            "{{seqConditionAgent_0.data.instance}}"
+          ],
+          "model": "",
+          "interrupt": "",
+          "promptValues": "",
+          "approvalPrompt": "You are about to execute tool: {tools}. Ask if user want to proceed",
+          "approveButtonText": "Yes",
+          "rejectButtonText": "No",
+          "updateStateMemory": "updateStateMemoryUI",
+          "maxIterations": "",
+          "selectedUpdateStateMemoryTab_seqAgent_2": "updateStateMemoryUI"
+        },
+        "outputAnchors": [
+          {
+            "id": "seqAgent_2-output-seqAgent-Agent",
+            "name": "seqAgent",
+            "label": "Agent",
+            "description": "Agent that can execute tools",
+            "type": "Agent"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 877,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 720.7847594003305,
+        "y": -500.5835563244211
+      },
+      "dragging": false
+    },
+    {
+      "id": "seqEnd_0",
+      "position": {
+        "x": 350.9469967789329,
+        "y": -106.55962658138483
+      },
+      "type": "customNode",
+      "data": {
+        "id": "seqEnd_0",
+        "label": "End",
+        "version": 2,
+        "name": "seqEnd",
+        "type": "End",
+        "baseClasses": [
+          "End"
+        ],
+        "category": "Sequential Agents",
+        "description": "End conversation",
+        "inputParams": [],
+        "inputAnchors": [
+          {
+            "label": "Agent | Condition | LLM | Tool Node",
+            "name": "sequentialNode",
+            "type": "Agent | Condition | LLMNode | ToolNode",
+            "id": "seqEnd_0-input-sequentialNode-Agent | Condition | LLMNode | ToolNode"
+          }
+        ],
+        "inputs": {
+          "sequentialNode": "{{seqConditionAgent_0.data.instance}}"
+        },
+        "outputAnchors": [],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 143,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 350.9469967789329,
+        "y": -106.55962658138483
+      },
+      "dragging": false
+    },
+    {
+      "id": "seqEnd_1",
+      "position": {
+        "x": 1450.1260971835866,
+        "y": 393.8419896324838
+      },
+      "type": "customNode",
+      "data": {
+        "id": "seqEnd_1",
+        "label": "End",
+        "version": 2,
+        "name": "seqEnd",
+        "type": "End",
+        "baseClasses": [
+          "End"
+        ],
+        "category": "Sequential Agents",
+        "description": "End conversation",
+        "inputParams": [],
+        "inputAnchors": [
+          {
+            "label": "Agent | Condition | LLM | Tool Node",
+            "name": "sequentialNode",
+            "type": "Agent | Condition | LLMNode | ToolNode",
+            "id": "seqEnd_1-input-sequentialNode-Agent | Condition | LLMNode | ToolNode"
+          }
+        ],
+        "inputs": {
+          "sequentialNode": "{{seqAgent_1.data.instance}}"
+        },
+        "outputAnchors": [],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 143,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1450.1260971835866,
+        "y": 393.8419896324838
+      },
+      "dragging": false
+    },
+    {
+      "id": "seqEnd_2",
+      "position": {
+        "x": 1090.6938605135474,
+        "y": 387.18200123374265
+      },
+      "type": "customNode",
+      "data": {
+        "id": "seqEnd_2",
+        "label": "End",
+        "version": 2,
+        "name": "seqEnd",
+        "type": "End",
+        "baseClasses": [
+          "End"
+        ],
+        "category": "Sequential Agents",
+        "description": "End conversation",
+        "inputParams": [],
+        "inputAnchors": [
+          {
+            "label": "Agent | Condition | LLM | Tool Node",
+            "name": "sequentialNode",
+            "type": "Agent | Condition | LLMNode | ToolNode",
+            "id": "seqEnd_2-input-sequentialNode-Agent | Condition | LLMNode | ToolNode"
+          }
+        ],
+        "inputs": {
+          "sequentialNode": "{{seqAgent_0.data.instance}}"
+        },
+        "outputAnchors": [],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 143,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1090.6938605135474,
+        "y": 387.18200123374265
+      },
+      "dragging": false
+    },
+    {
+      "id": "seqEnd_3",
+      "position": {
+        "x": 717.0242295394611,
+        "y": 390.39488830537607
+      },
+      "type": "customNode",
+      "data": {
+        "id": "seqEnd_3",
+        "label": "End",
+        "version": 2,
+        "name": "seqEnd",
+        "type": "End",
+        "baseClasses": [
+          "End"
+        ],
+        "category": "Sequential Agents",
+        "description": "End conversation",
+        "inputParams": [],
+        "inputAnchors": [
+          {
+            "label": "Agent | Condition | LLM | Tool Node",
+            "name": "sequentialNode",
+            "type": "Agent | Condition | LLMNode | ToolNode",
+            "id": "seqEnd_3-input-sequentialNode-Agent | Condition | LLMNode | ToolNode"
+          }
+        ],
+        "inputs": {
+          "sequentialNode": "{{seqAgent_2.data.instance}}"
+        },
+        "outputAnchors": [],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 143,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 717.0242295394611,
+        "y": 390.39488830537607
+      },
+      "dragging": false
+    },
+    {
+      "id": "readFile_0",
+      "position": {
+        "x": 723.5650859006713,
+        "y": -801.7247612922572
+      },
+      "type": "customNode",
+      "data": {
+        "id": "readFile_0",
+        "label": "Read File",
+        "version": 1,
+        "name": "readFile",
+        "type": "ReadFile",
+        "baseClasses": [
+          "ReadFile",
+          "Tool",
+          "StructuredTool",
+          "Runnable"
+        ],
+        "category": "Tools",
+        "description": "Read file from disk",
+        "inputParams": [
+          {
+            "label": "Base Path",
+            "name": "basePath",
+            "placeholder": "C:\\Users\\User\\Desktop",
+            "type": "string",
+            "optional": true,
+            "id": "readFile_0-input-basePath-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "basePath": "C:\\Users\\Fran\\Desktop\\"
+        },
+        "outputAnchors": [
+          {
+            "id": "readFile_0-output-readFile-ReadFile|Tool|StructuredTool|Runnable",
+            "name": "readFile",
+            "label": "ReadFile",
+            "description": "Read file from disk",
+            "type": "ReadFile | Tool | StructuredTool | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 278,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 723.5650859006713,
+        "y": -801.7247612922572
+      }
+    },
+    {
+      "id": "writeFile_0",
+      "position": {
+        "x": 1092.2448512907265,
+        "y": -802.1854184465574
+      },
+      "type": "customNode",
+      "data": {
+        "id": "writeFile_0",
+        "label": "Write File",
+        "version": 1,
+        "name": "writeFile",
+        "type": "WriteFile",
+        "baseClasses": [
+          "WriteFile",
+          "Tool",
+          "StructuredTool",
+          "Runnable"
+        ],
+        "category": "Tools",
+        "description": "Write file to disk",
+        "inputParams": [
+          {
+            "label": "Base Path",
+            "name": "basePath",
+            "placeholder": "C:\\Users\\User\\Desktop",
+            "type": "string",
+            "optional": true,
+            "id": "writeFile_0-input-basePath-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "basePath": "C:\\Users\\Fran\\Desktop\\"
+        },
+        "outputAnchors": [
+          {
+            "id": "writeFile_0-output-writeFile-WriteFile|Tool|StructuredTool|Runnable",
+            "name": "writeFile",
+            "label": "WriteFile",
+            "description": "Write file to disk",
+            "type": "WriteFile | Tool | StructuredTool | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 278,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1092.2448512907265,
+        "y": -802.1854184465574
+      },
+      "dragging": false
+    },
+    {
+      "id": "writeFile_1",
+      "position": {
+        "x": 1450.064924765366,
+        "y": -797.74542618073
+      },
+      "type": "customNode",
+      "data": {
+        "id": "writeFile_1",
+        "label": "Write File",
+        "version": 1,
+        "name": "writeFile",
+        "type": "WriteFile",
+        "baseClasses": [
+          "WriteFile",
+          "Tool",
+          "StructuredTool",
+          "Runnable"
+        ],
+        "category": "Tools",
+        "description": "Write file to disk",
+        "inputParams": [
+          {
+            "label": "Base Path",
+            "name": "basePath",
+            "placeholder": "C:\\Users\\User\\Desktop",
+            "type": "string",
+            "optional": true,
+            "id": "writeFile_1-input-basePath-string"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "basePath": "C:\\Users\\Fran\\Desktop\\"
+        },
+        "outputAnchors": [
+          {
+            "id": "writeFile_1-output-writeFile-WriteFile|Tool|StructuredTool|Runnable",
+            "name": "writeFile",
+            "label": "WriteFile",
+            "description": "Write file to disk",
+            "type": "WriteFile | Tool | StructuredTool | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 278,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1450.064924765366,
+        "y": -797.74542618073
+      },
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "source": "agentMemory_0",
+      "sourceHandle": "agentMemory_0-output-agentMemory-AgentMemory|BaseCheckpointSaver",
+      "target": "seqStart_0",
+      "targetHandle": "seqStart_0-input-agentMemory-BaseCheckpointSaver",
+      "type": "buttonedge",
+      "id": "agentMemory_0-agentMemory_0-output-agentMemory-AgentMemory|BaseCheckpointSaver-seqStart_0-seqStart_0-input-agentMemory-BaseCheckpointSaver"
+    },
+    {
+      "source": "chatOpenAI_0",
+      "sourceHandle": "chatOpenAI_0-output-chatOpenAI-ChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable",
+      "target": "seqStart_0",
+      "targetHandle": "seqStart_0-input-model-BaseChatModel",
+      "type": "buttonedge",
+      "id": "chatOpenAI_0-chatOpenAI_0-output-chatOpenAI-ChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable-seqStart_0-seqStart_0-input-model-BaseChatModel"
+    },
+    {
+      "source": "seqStart_0",
+      "sourceHandle": "seqStart_0-output-seqStart-Start",
+      "target": "seqConditionAgent_0",
+      "targetHandle": "seqConditionAgent_0-input-sequentialNode-Start | Agent | LLMNode | ToolNode",
+      "type": "buttonedge",
+      "id": "seqStart_0-seqStart_0-output-seqStart-Start-seqConditionAgent_0-seqConditionAgent_0-input-sequentialNode-Start | Agent | LLMNode | ToolNode"
+    },
+    {
+      "source": "seqConditionAgent_0",
+      "sourceHandle": "seqConditionAgent_0-output-support-Condition",
+      "target": "seqAgent_2",
+      "targetHandle": "seqAgent_2-input-sequentialNode-Start | Agent | Condition | LLMNode | ToolNode",
+      "type": "buttonedge",
+      "id": "seqConditionAgent_0-seqConditionAgent_0-output-support-Condition-seqAgent_2-seqAgent_2-input-sequentialNode-Start | Agent | Condition | LLMNode | ToolNode"
+    },
+    {
+      "source": "seqConditionAgent_0",
+      "sourceHandle": "seqConditionAgent_0-output-payment-Condition",
+      "target": "seqAgent_0",
+      "targetHandle": "seqAgent_0-input-sequentialNode-Start | Agent | Condition | LLMNode | ToolNode",
+      "type": "buttonedge",
+      "id": "seqConditionAgent_0-seqConditionAgent_0-output-payment-Condition-seqAgent_0-seqAgent_0-input-sequentialNode-Start | Agent | Condition | LLMNode | ToolNode"
+    },
+    {
+      "source": "seqConditionAgent_0",
+      "sourceHandle": "seqConditionAgent_0-output-accident_report-Condition",
+      "target": "seqAgent_1",
+      "targetHandle": "seqAgent_1-input-sequentialNode-Start | Agent | Condition | LLMNode | ToolNode",
+      "type": "buttonedge",
+      "id": "seqConditionAgent_0-seqConditionAgent_0-output-accident_report-Condition-seqAgent_1-seqAgent_1-input-sequentialNode-Start | Agent | Condition | LLMNode | ToolNode"
+    },
+    {
+      "source": "seqConditionAgent_0",
+      "sourceHandle": "seqConditionAgent_0-output-end-Condition",
+      "target": "seqEnd_0",
+      "targetHandle": "seqEnd_0-input-sequentialNode-Agent | Condition | LLMNode | ToolNode",
+      "type": "buttonedge",
+      "id": "seqConditionAgent_0-seqConditionAgent_0-output-end-Condition-seqEnd_0-seqEnd_0-input-sequentialNode-Agent | Condition | LLMNode | ToolNode"
+    },
+    {
+      "source": "seqAgent_2",
+      "sourceHandle": "seqAgent_2-output-seqAgent-Agent",
+      "target": "seqEnd_3",
+      "targetHandle": "seqEnd_3-input-sequentialNode-Agent | Condition | LLMNode | ToolNode",
+      "type": "buttonedge",
+      "id": "seqAgent_2-seqAgent_2-output-seqAgent-Agent-seqEnd_3-seqEnd_3-input-sequentialNode-Agent | Condition | LLMNode | ToolNode"
+    },
+    {
+      "source": "seqAgent_0",
+      "sourceHandle": "seqAgent_0-output-seqAgent-Agent",
+      "target": "seqEnd_2",
+      "targetHandle": "seqEnd_2-input-sequentialNode-Agent | Condition | LLMNode | ToolNode",
+      "type": "buttonedge",
+      "id": "seqAgent_0-seqAgent_0-output-seqAgent-Agent-seqEnd_2-seqEnd_2-input-sequentialNode-Agent | Condition | LLMNode | ToolNode"
+    },
+    {
+      "source": "seqAgent_1",
+      "sourceHandle": "seqAgent_1-output-seqAgent-Agent",
+      "target": "seqEnd_1",
+      "targetHandle": "seqEnd_1-input-sequentialNode-Agent | Condition | LLMNode | ToolNode",
+      "type": "buttonedge",
+      "id": "seqAgent_1-seqAgent_1-output-seqAgent-Agent-seqEnd_1-seqEnd_1-input-sequentialNode-Agent | Condition | LLMNode | ToolNode"
+    },
+    {
+      "source": "readFile_0",
+      "sourceHandle": "readFile_0-output-readFile-ReadFile|Tool|StructuredTool|Runnable",
+      "target": "seqAgent_0",
+      "targetHandle": "seqAgent_0-input-tools-Tool",
+      "type": "buttonedge",
+      "id": "readFile_0-readFile_0-output-readFile-ReadFile|Tool|StructuredTool|Runnable-seqAgent_0-seqAgent_0-input-tools-Tool"
+    },
+    {
+      "source": "writeFile_0",
+      "sourceHandle": "writeFile_0-output-writeFile-WriteFile|Tool|StructuredTool|Runnable",
+      "target": "seqAgent_0",
+      "targetHandle": "seqAgent_0-input-tools-Tool",
+      "type": "buttonedge",
+      "id": "writeFile_0-writeFile_0-output-writeFile-WriteFile|Tool|StructuredTool|Runnable-seqAgent_0-seqAgent_0-input-tools-Tool"
+    },
+    {
+      "source": "writeFile_1",
+      "sourceHandle": "writeFile_1-output-writeFile-WriteFile|Tool|StructuredTool|Runnable",
+      "target": "seqAgent_1",
+      "targetHandle": "seqAgent_1-input-tools-Tool",
+      "type": "buttonedge",
+      "id": "writeFile_1-writeFile_1-output-writeFile-WriteFile|Tool|StructuredTool|Runnable-seqAgent_1-seqAgent_1-input-tools-Tool"
+    }
+  ]
+}
